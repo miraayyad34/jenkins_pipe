@@ -14,17 +14,16 @@ pipeline {
         }
 
         stage('Build') {
-            steps {
-                script {
-                    docker.image('node:alpine').inside {
-                        sh '''
-                            echo "With Docker"
-                            echo "Mira Ayyad" > mira.txt
-                            node --version
-                        '''
-                        stash name: 'myname-file', includes: 'mira.txt'
-                    }
+            agent {
+                docker {
+                    image 'node:alpine'
                 }
+            }
+            steps {
+                echo "With docker"
+                echo "Mira Ayyad" > mira.txt
+                sh 'node --version'
+                stash name: 'myname-file', includes: 'mira.txt'
             }
         }
 
@@ -49,6 +48,6 @@ pipeline {
                 docker rm my-nginx-alpine 
                 cat mira.txt
             '''
-        }
-    }
+        }
+    }
 }
