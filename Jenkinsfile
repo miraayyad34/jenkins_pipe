@@ -14,7 +14,11 @@ pipeline {
         }
 
         stage('Build') {
-            agent any // or agent { label 'your-label' } if you want to specify a specific agent
+            agent {
+                docker {
+                    image 'node:alpine'
+                }
+            }
             steps {
                 echo "With docker"
                 echo "Mira Ayyad" > mira.txt
@@ -38,12 +42,18 @@ pipeline {
 
     post {
         always {
-            unstash 'myname-file'
+            script {
+                try {
+                    unstash 'myname-file'
+                } catch (Exception e) {
+                    echo "No stashed files to unstash."
+                }
+            }
             sh '''
-                docker stop my-nginx-alpine
-                docker rm my-nginx-alpine 
-                cat mira.txt
+                docker stop my-nginx-alpine || true
+                docker rm my-nginx-alpine || true
+                cat mira.txt || echo "mira.txt not found"
             '''
-        }
-    }
+        }
+    }
 }
