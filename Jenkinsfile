@@ -5,10 +5,8 @@ pipeline {
         stage('Login and Deploy') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'mira-id', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh '''
-                        echo "Logging in with user: $USERNAME"
-                        echo $PASSWORD | docker login -u "$USERNAME" --password-stdin
-                    '''
+                    sh 'echo "Logging in with user: $USERNAME"'
+                    sh 'echo $PASSWORD | docker login -u "$USERNAME" --password-stdin'
                 }
             }
         }
