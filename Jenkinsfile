@@ -14,11 +14,7 @@ pipeline {
         }
 
         stage('Build') {
-            agent {
-                docker {
-                    image 'node:alpine'
-                }
-            }
+            agent any // or agent { label 'your-label' } if you want to specify a specific agent
             steps {
                 echo "With docker"
                 echo "Mira Ayyad" > mira.txt
@@ -48,6 +44,6 @@ pipeline {
                 docker rm my-nginx-alpine 
                 cat mira.txt
             '''
-        }
-    }
+        }
+    }
 }
