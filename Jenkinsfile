@@ -30,12 +30,7 @@ pipeline {
         stage('Deploy Nginx Alpine Container') {
             steps {
                 sh 'docker pull nginx:alpine'
-                sh '''
-                    docker run -d \
-                    --name my-nginx-alpine \
-                    -p 6000:80 \
-                    nginx:alpine
-                '''
+                sh 'docker run -d --name my-nginx-alpine -p 6000:80 nginx:alpine'
             }
         }
     }
