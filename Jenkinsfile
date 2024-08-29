@@ -17,7 +17,6 @@ pipeline {
             agent {
                 docker { 
                     image 'node:alpine'
-                    // Make sure to use the correct Docker image for the build stage
                 }
             }
             steps {
