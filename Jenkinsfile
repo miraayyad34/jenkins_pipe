@@ -15,14 +15,15 @@ pipeline {
 
         stage('Build') {
             agent {
-                docker {
+                docker { 
                     image 'node:alpine'
+                    // Make sure to use the correct Docker image for the build stage
                 }
             }
             steps {
                 echo "With docker"
-                echo "Mira Ayyad" > mira.txt
                 sh 'node --version'
+                sh 'echo "Mira Ayyad" > mira.txt'
                 stash name: 'myname-file', includes: 'mira.txt'
             }
         }
@@ -52,8 +53,8 @@ pipeline {
             sh '''
                 docker stop my-nginx-alpine || true
                 docker rm my-nginx-alpine || true
-                cat mira.txt || echo "mira.txt not found"
+                [ -f mira.txt ] && cat mira.txt || echo "mira.txt not found"
             '''
-        }
-    }
+        }
+    }
 }
